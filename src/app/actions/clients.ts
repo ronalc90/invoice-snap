@@ -58,7 +58,7 @@ export async function createClient(data: ClientFormData): Promise<ActionResult<C
     revalidatePath('/clients');
     return { success: true, data: client };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to create client';
+    const message = error instanceof Error ? error.message : 'Error al crear el cliente';
     return { success: false, error: message };
   }
 }
@@ -73,7 +73,7 @@ export async function updateClient(id: string, data: ClientFormData): Promise<Ac
     });
 
     if (!existing) {
-      return { success: false, error: 'Client not found' };
+      return { success: false, error: 'Cliente no encontrado' };
     }
 
     const client = await prisma.client.update({
@@ -85,7 +85,7 @@ export async function updateClient(id: string, data: ClientFormData): Promise<Ac
     revalidatePath(`/clients/${id}`);
     return { success: true, data: client };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to update client';
+    const message = error instanceof Error ? error.message : 'Error al actualizar el cliente';
     return { success: false, error: message };
   }
 }
@@ -99,7 +99,7 @@ export async function deleteClient(id: string): Promise<ActionResult> {
     });
 
     if (!existing) {
-      return { success: false, error: 'Client not found' };
+      return { success: false, error: 'Cliente no encontrado' };
     }
 
     // Check if client has invoices
@@ -108,7 +108,7 @@ export async function deleteClient(id: string): Promise<ActionResult> {
     });
 
     if (invoiceCount > 0) {
-      return { success: false, error: 'Cannot delete client with existing invoices' };
+      return { success: false, error: 'No se puede eliminar un cliente con facturas existentes' };
     }
 
     await prisma.client.delete({ where: { id } });
@@ -116,7 +116,7 @@ export async function deleteClient(id: string): Promise<ActionResult> {
     revalidatePath('/clients');
     return { success: true };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to delete client';
+    const message = error instanceof Error ? error.message : 'Error al eliminar el cliente';
     return { success: false, error: message };
   }
 }

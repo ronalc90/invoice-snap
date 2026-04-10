@@ -19,7 +19,7 @@ export function DataTable<T>({
   data,
   keyExtractor,
   onRowClick,
-  emptyMessage = 'No data found',
+  emptyMessage = 'No se encontraron datos',
 }: DataTableProps<T>) {
   if (data.length === 0) {
     return (

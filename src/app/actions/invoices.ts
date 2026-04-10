@@ -213,7 +213,7 @@ export async function sendInvoice(id: string): Promise<ActionResult> {
       return { success: false, error: 'Invoice cannot be sent in its current status' };
     }
 
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3003';
     const viewUrl = `${appUrl}/invoices/${invoice.id}/preview`;
 
     const result = await sendInvoiceEmail({

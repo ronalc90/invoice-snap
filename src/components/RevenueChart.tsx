@@ -11,7 +11,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
 
   return (
     <div className="rounded-lg border bg-white p-6 shadow-sm">
-      <h3 className="mb-6 text-lg font-medium text-gray-900">Revenue (Last 6 Months)</h3>
+      <h3 className="mb-6 text-lg font-medium text-gray-900">Ingresos (Ultimos 6 Meses)</h3>
       <div className="flex items-end gap-4" style={{ height: '200px' }}>
         {data.map((item) => {
           const heightPercent = (item.revenue / maxRevenue) * 100;

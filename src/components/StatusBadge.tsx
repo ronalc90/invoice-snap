@@ -1,4 +1,4 @@
-import { getStatusColor } from '@/lib/utils';
+import { getStatusColor, getStatusLabel } from '@/lib/utils';
 
 interface StatusBadgeProps {
   status: string;
@@ -9,7 +9,7 @@ export function StatusBadge({ status }: StatusBadgeProps) {
     <span
       className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusColor(status)}`}
     >
-      {status}
+      {getStatusLabel(status)}
     </span>
   );
 }

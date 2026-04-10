@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: invoicesnap-service
+  namespace: invoicesnap
+  labels:
+    app: invoicesnap
+spec:
+  type: ClusterIP
+  selector:
+    app: invoicesnap
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3003
+      protocol: TCP

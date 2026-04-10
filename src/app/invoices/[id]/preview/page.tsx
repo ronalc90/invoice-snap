@@ -29,7 +29,7 @@ export default async function InvoicePreviewPage({ params }: PreviewPageProps) {
         </div>
         <InvoicePreview invoice={invoice} />
         <div className="mt-6 text-center text-sm text-gray-400">
-          Powered by InvoiceSnap
+          Creado con InvoiceSnap
         </div>
       </div>
     </div>

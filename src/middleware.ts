@@ -6,7 +6,7 @@ export default auth((req) => {
   const { pathname } = req.nextUrl;
 
   // Public routes that don't require auth
-  const publicPaths = ['/login', '/api/auth', '/invoices/'];
+  const publicPaths = ['/login', '/api/auth'];
   const isPublicPath = publicPaths.some((path) => pathname.startsWith(path));
 
   // Allow public invoice preview

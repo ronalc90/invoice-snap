@@ -1,0 +1,126 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 6 * * 1' # Lunes a las 6:00 AM UTC
+
+jobs:
+  # ────────────────────────────────────────────────────────
+  # Analisis de dependencias con npm audit
+  # ────────────────────────────────────────────────────────
+  dependency-audit:
+    name: Auditoria de Dependencias
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: npm audit (nivel alto)
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
+      - name: npm audit (reporte JSON)
+        run: npm audit --json > audit-report.json || true
+
+      - name: Subir reporte de auditoria
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-audit-report
+          path: audit-report.json
+          retention-days: 30
+
+  # ────────────────────────────────────────────────────────
+  # Escaneo de secretos con TruffleHog
+  # ────────────────────────────────────────────────────────
+  secret-scan:
+    name: Escaneo de Secretos
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: TruffleHog - buscar secretos expuestos
+        uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --only-verified
+
+  # ────────────────────────────────────────────────────────
+  # Escaneo de imagen Docker con Trivy
+  # ────────────────────────────────────────────────────────
+  container-scan:
+    name: Escaneo de Contenedor
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Build imagen Docker para escaneo
+        run: docker build -t invoicesnap:scan .
+
+      - name: Trivy - escaneo de vulnerabilidades
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'invoicesnap:scan'
+          format: 'table'
+          exit-code: '0'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Trivy - reporte SARIF
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'invoicesnap:scan'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Subir reporte Trivy
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-scan-report
+          path: trivy-results.sarif
+          retention-days: 30
+
+  # ────────────────────────────────────────────────────────
+  # CodeQL para analisis estatico
+  # ────────────────────────────────────────────────────────
+  codeql:
+    name: Analisis CodeQL
+    runs-on: ubuntu-latest
+
+    permissions:
+      security-events: write
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Inicializar CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+
+      - name: Ejecutar analisis CodeQL
+        uses: github/codeql-action/analyze@v3

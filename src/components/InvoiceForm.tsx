@@ -83,7 +83,7 @@ export function InvoiceForm({ clients, invoice }: InvoiceFormProps) {
       router.push(`/invoices/${result.data.id}`);
       router.refresh();
     } else {
-      setError(result.error || 'Something went wrong');
+      setError(result.error || 'Algo salio mal');
     }
   }
 
@@ -100,13 +100,13 @@ export function InvoiceForm({ clients, invoice }: InvoiceFormProps) {
         </div>
       )}
 
-      {/* Client & Dates */}
+      {/* Cliente y Fechas */}
       <div className="rounded-lg border bg-white p-6 shadow-sm">
-        <h3 className="mb-4 text-lg font-medium text-gray-900">Invoice Details</h3>
+        <h3 className="mb-4 text-lg font-medium text-gray-900">Detalles de la Factura</h3>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           <div className="sm:col-span-2">
             <label htmlFor="clientId" className="block text-sm font-medium text-gray-700">
-              Client *
+              Cliente *
             </label>
             <select
               name="clientId"
@@ -115,7 +115,7 @@ export function InvoiceForm({ clients, invoice }: InvoiceFormProps) {
               defaultValue={invoice?.clientId || ''}
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
             >
-              <option value="">Select a client</option>
+              <option value="">Seleccionar cliente</option>
               {clients.map((client) => (
                 <option key={client.id} value={client.id}>
                   {client.name} {client.company ? `(${client.company})` : ''}
@@ -126,7 +126,7 @@ export function InvoiceForm({ clients, invoice }: InvoiceFormProps) {
 
           <div>
             <label htmlFor="issueDate" className="block text-sm font-medium text-gray-700">
-              Issue Date *
+              Fecha de Emision *
             </label>
             <input
               type="date"
@@ -140,7 +140,7 @@ export function InvoiceForm({ clients, invoice }: InvoiceFormProps) {
 
           <div>
             <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700">
-              Due Date *
+              Fecha de Vencimiento *
             </label>
             <input
               type="date"
@@ -154,7 +154,7 @@ export function InvoiceForm({ clients, invoice }: InvoiceFormProps) {
         </div>
       </div>
 
-      {/* Line Items */}
+      {/* Items */}
       <div className="rounded-lg border bg-white p-6 shadow-sm">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg font-medium text-gray-900">Items</h3>
@@ -163,17 +163,17 @@ export function InvoiceForm({ clients, invoice }: InvoiceFormProps) {
             onClick={addItem}
             className="rounded-md bg-primary-50 px-3 py-1.5 text-sm font-medium text-primary-700 hover:bg-primary-100"
           >
-            + Add Item
+            + Agregar Item
           </button>
         </div>
 
         <div className="space-y-4">
-          {/* Header */}
+          {/* Encabezado */}
           <div className="hidden grid-cols-12 gap-4 text-sm font-medium text-gray-500 sm:grid">
-            <div className="col-span-5">Description</div>
-            <div className="col-span-2">Quantity</div>
-            <div className="col-span-2">Unit Price</div>
-            <div className="col-span-2">Amount</div>
+            <div className="col-span-5">Descripcion</div>
+            <div className="col-span-2">Cantidad</div>
+            <div className="col-span-2">Precio Unitario</div>
+            <div className="col-span-2">Monto</div>
             <div className="col-span-1"></div>
           </div>
 
@@ -182,7 +182,7 @@ export function InvoiceForm({ clients, invoice }: InvoiceFormProps) {
               <div className="sm:col-span-5">
                 <input
                   type="text"
-                  placeholder="Description"
+                  placeholder="Descripcion"
                   value={item.description}
                   onChange={(e) => updateItem(item.id, 'description', e.target.value)}
                   required
@@ -194,7 +194,7 @@ export function InvoiceForm({ clients, invoice }: InvoiceFormProps) {
                   type="number"
                   min="0.01"
                   step="0.01"
-                  placeholder="Qty"
+                  placeholder="Cant."
                   value={item.quantity}
                   onChange={(e) => updateItem(item.id, 'quantity', parseFloat(e.target.value) || 0)}
                   required
@@ -206,7 +206,7 @@ export function InvoiceForm({ clients, invoice }: InvoiceFormProps) {
                   type="number"
                   min="0"
                   step="0.01"
-                  placeholder="Price"
+                  placeholder="Precio"
                   value={item.unitPrice}
                   onChange={(e) => updateItem(item.id, 'unitPrice', parseFloat(e.target.value) || 0)}
                   required
@@ -233,22 +233,22 @@ export function InvoiceForm({ clients, invoice }: InvoiceFormProps) {
         </div>
       </div>
 
-      {/* Totals & Notes */}
+      {/* Totales y Notas */}
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
         <div className="rounded-lg border bg-white p-6 shadow-sm">
-          <h3 className="mb-4 text-lg font-medium text-gray-900">Notes</h3>
+          <h3 className="mb-4 text-lg font-medium text-gray-900">Notas</h3>
           <textarea
             name="notes"
             rows={4}
             defaultValue={invoice?.notes || ''}
-            placeholder="Additional notes for the client..."
+            placeholder="Notas adicionales para el cliente..."
             className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
           />
           <input type="hidden" name="currency" value="USD" />
         </div>
 
         <div className="rounded-lg border bg-white p-6 shadow-sm">
-          <h3 className="mb-4 text-lg font-medium text-gray-900">Summary</h3>
+          <h3 className="mb-4 text-lg font-medium text-gray-900">Resumen</h3>
           <div className="space-y-3">
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">Subtotal</span>
@@ -256,7 +256,7 @@ export function InvoiceForm({ clients, invoice }: InvoiceFormProps) {
             </div>
             <div className="flex items-center justify-between text-sm">
               <div className="flex items-center gap-2">
-                <span className="text-gray-500">Tax Rate</span>
+                <span className="text-gray-500">Impuesto</span>
                 <input
                   type="number"
                   min="0"
@@ -280,21 +280,21 @@ export function InvoiceForm({ clients, invoice }: InvoiceFormProps) {
         </div>
       </div>
 
-      {/* Actions */}
+      {/* Acciones */}
       <div className="flex justify-end gap-3">
         <button
           type="button"
           onClick={() => router.back()}
           className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
         >
-          Cancel
+          Cancelar
         </button>
         <button
           type="submit"
           disabled={loading}
           className="rounded-md bg-primary-600 px-6 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 disabled:opacity-50"
         >
-          {loading ? 'Saving...' : invoice ? 'Update Invoice' : 'Create Invoice'}
+          {loading ? 'Guardando...' : invoice ? 'Actualizar Factura' : 'Crear Factura'}
         </button>
       </div>
     </form>

@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatCurrency(amount: number, currency: string = 'USD'): string {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('es', {
     style: 'currency',
     currency,
   }).format(amount);
@@ -14,7 +14,7 @@ export function formatCurrency(amount: number, currency: string = 'USD'): string
 
 export function formatDate(date: Date | string): string {
   const d = typeof date === 'string' ? new Date(date) : date;
-  return new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat('es', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -63,4 +63,15 @@ export function getStatusColor(status: string): string {
     OVERDUE: 'bg-red-100 text-red-800',
   };
   return colors[status] || 'bg-gray-100 text-gray-800';
+}
+
+export function getStatusLabel(status: string): string {
+  const labels: Record<string, string> = {
+    DRAFT: 'Borrador',
+    SENT: 'Enviada',
+    VIEWED: 'Vista',
+    PAID: 'Pagada',
+    OVERDUE: 'Vencida',
+  };
+  return labels[status] || status;
 }

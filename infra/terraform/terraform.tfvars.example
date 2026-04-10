@@ -1,0 +1,16 @@
+# ─────────────────────────────────────────────────────────
+# Ejemplo de variables de Terraform
+# Copiar a terraform.tfvars y completar con valores reales.
+# NUNCA commitear terraform.tfvars al repositorio.
+# ─────────────────────────────────────────────────────────
+
+vercel_api_token      = ""
+vercel_team_id        = ""
+supabase_access_token = ""
+supabase_org_id       = ""
+supabase_db_password  = ""
+database_url          = "postgresql://user:pass@host:5432/invoicesnap"
+nextauth_secret       = ""
+nextauth_url          = "https://invoicesnap.vercel.app"
+resend_api_key        = "re_..."
+custom_domain         = ""

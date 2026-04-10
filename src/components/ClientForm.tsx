@@ -38,7 +38,7 @@ export function ClientForm({ client }: ClientFormProps) {
       router.push('/clients');
       router.refresh();
     } else {
-      setError(result.error || 'Something went wrong');
+      setError(result.error || 'Algo salio mal');
     }
   }
 
@@ -53,7 +53,7 @@ export function ClientForm({ client }: ClientFormProps) {
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-            Name *
+            Nombre *
           </label>
           <input
             type="text"
@@ -67,7 +67,7 @@ export function ClientForm({ client }: ClientFormProps) {
 
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            Email *
+            Correo electronico *
           </label>
           <input
             type="email"
@@ -81,7 +81,7 @@ export function ClientForm({ client }: ClientFormProps) {
 
         <div>
           <label htmlFor="company" className="block text-sm font-medium text-gray-700">
-            Company
+            Empresa
           </label>
           <input
             type="text"
@@ -94,7 +94,7 @@ export function ClientForm({ client }: ClientFormProps) {
 
         <div>
           <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-            Phone
+            Telefono
           </label>
           <input
             type="tel"
@@ -107,7 +107,7 @@ export function ClientForm({ client }: ClientFormProps) {
 
         <div className="sm:col-span-2">
           <label htmlFor="address" className="block text-sm font-medium text-gray-700">
-            Address
+            Direccion
           </label>
           <textarea
             name="address"
@@ -125,14 +125,14 @@ export function ClientForm({ client }: ClientFormProps) {
           onClick={() => router.back()}
           className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
         >
-          Cancel
+          Cancelar
         </button>
         <button
           type="submit"
           disabled={loading}
           className="rounded-md bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 disabled:opacity-50"
         >
-          {loading ? 'Saving...' : client ? 'Update Client' : 'Create Client'}
+          {loading ? 'Guardando...' : client ? 'Actualizar Cliente' : 'Crear Cliente'}
         </button>
       </div>
     </form>

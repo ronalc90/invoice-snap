@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: invoicesnap-config
+  namespace: invoicesnap
+  labels:
+    app: invoicesnap
+data:
+  NODE_ENV: "production"
+  PORT: "3003"
+  NEXTAUTH_URL: "https://invoicesnap.example.com"
+  NEXT_PUBLIC_APP_URL: "https://invoicesnap.example.com"

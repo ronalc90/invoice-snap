@@ -1,0 +1,30 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  scrape_timeout: 10s
+
+scrape_configs:
+  # ────────────────────────────────────────────────────────
+  # Metricas de la aplicacion InvoiceSnap
+  # ────────────────────────────────────────────────────────
+  - job_name: 'invoicesnap'
+    metrics_path: '/api/metrics'
+    static_configs:
+      - targets: ['app:3003']
+        labels:
+          app: 'invoicesnap'
+          environment: 'production'
+
+  # ────────────────────────────────────────────────────────
+  # Metricas de Prometheus (auto-monitoreo)
+  # ────────────────────────────────────────────────────────
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # ────────────────────────────────────────────────────────
+  # Metricas de PostgreSQL (si se agrega pg_exporter)
+  # ────────────────────────────────────────────────────────
+  # - job_name: 'postgres'
+  #   static_configs:
+  #     - targets: ['postgres-exporter:9187']

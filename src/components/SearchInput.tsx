@@ -7,7 +7,7 @@ interface SearchInputProps {
   placeholder?: string;
 }
 
-export function SearchInput({ placeholder = 'Search...' }: SearchInputProps) {
+export function SearchInput({ placeholder = 'Buscar...' }: SearchInputProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [value, setValue] = useState(searchParams.get('search') || '');

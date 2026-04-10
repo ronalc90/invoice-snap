@@ -58,7 +58,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
   for (let i = 5; i >= 0; i--) {
     const monthDate = new Date(now.getFullYear(), now.getMonth() - i, 1);
     const monthEnd = new Date(now.getFullYear(), now.getMonth() - i + 1, 0);
-    const monthName = monthDate.toLocaleString('en-US', { month: 'short' });
+    const monthName = monthDate.toLocaleString('es', { month: 'short' });
 
     const monthRevenue = allPaidInvoices
       .filter((inv) => {

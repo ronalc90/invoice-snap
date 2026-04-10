@@ -23,6 +23,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # Database
+*.db
+*.db-journal
 prisma/dev.db
 prisma/dev.db-journal
 prisma/migrations/
@@ -42,6 +44,13 @@ memory/
 
 # Testing
 coverage/
+
+# Terraform
+infra/terraform/.terraform/
+infra/terraform/*.tfstate
+infra/terraform/*.tfstate.*
+infra/terraform/terraform.tfvars
+infra/terraform/.terraform.lock.hcl
 
 # Misc
 *.tsbuildinfo

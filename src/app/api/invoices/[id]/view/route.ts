@@ -16,7 +16,7 @@ export async function GET(
     });
 
     if (!invoice) {
-      return NextResponse.json({ error: 'Invoice not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Factura no encontrada' }, { status: 404 });
     }
 
     // Mark as viewed if currently sent
@@ -32,6 +32,6 @@ export async function GET(
 
     return NextResponse.json(invoice);
   } catch (error) {
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 });
   }
 }
