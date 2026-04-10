@@ -109,7 +109,7 @@ export async function createInvoice(data: InvoiceFormData): Promise<ActionResult
     revalidatePath('/');
     return { success: true, data: { id: invoice.id } };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to create invoice';
+    const message = error instanceof Error ? error.message : 'Error al crear la factura';
     return { success: false, error: message };
   }
 }
@@ -124,11 +124,11 @@ export async function updateInvoice(id: string, data: InvoiceFormData): Promise<
     });
 
     if (!existing) {
-      return { success: false, error: 'Invoice not found' };
+      return { success: false, error: 'Factura no encontrada' };
     }
 
     if (existing.status !== 'DRAFT') {
-      return { success: false, error: 'Only draft invoices can be edited' };
+      return { success: false, error: 'Solo se pueden editar facturas en borrador' };
     }
 
     const items = validated.items.map((item) => ({
@@ -168,7 +168,7 @@ export async function updateInvoice(id: string, data: InvoiceFormData): Promise<
     revalidatePath('/');
     return { success: true, data: { id } };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to update invoice';
+    const message = error instanceof Error ? error.message : 'Error al actualizar la factura';
     return { success: false, error: message };
   }
 }
@@ -182,7 +182,7 @@ export async function deleteInvoice(id: string): Promise<ActionResult> {
     });
 
     if (!existing) {
-      return { success: false, error: 'Invoice not found' };
+      return { success: false, error: 'Factura no encontrada' };
     }
 
     await prisma.invoice.delete({ where: { id } });
@@ -191,7 +191,7 @@ export async function deleteInvoice(id: string): Promise<ActionResult> {
     revalidatePath('/');
     return { success: true };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to delete invoice';
+    const message = error instanceof Error ? error.message : 'Error al eliminar la factura';
     return { success: false, error: message };
   }
 }
@@ -206,11 +206,11 @@ export async function sendInvoice(id: string): Promise<ActionResult> {
     });
 
     if (!invoice) {
-      return { success: false, error: 'Invoice not found' };
+      return { success: false, error: 'Factura no encontrada' };
     }
 
     if (invoice.status !== 'DRAFT' && invoice.status !== 'SENT') {
-      return { success: false, error: 'Invoice cannot be sent in its current status' };
+      return { success: false, error: 'La factura no puede ser enviada en su estado actual' };
     }
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3003';
@@ -227,7 +227,7 @@ export async function sendInvoice(id: string): Promise<ActionResult> {
     });
 
     if (!result.success) {
-      return { success: false, error: 'Failed to send email' };
+      return { success: false, error: 'Error al enviar el correo' };
     }
 
     await prisma.invoice.update({
@@ -243,7 +243,7 @@ export async function sendInvoice(id: string): Promise<ActionResult> {
     revalidatePath('/');
     return { success: true };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to send invoice';
+    const message = error instanceof Error ? error.message : 'Error al enviar la factura';
     return { success: false, error: message };
   }
 }
@@ -253,7 +253,7 @@ export async function markInvoiceAsViewed(id: string): Promise<ActionResult> {
     const invoice = await prisma.invoice.findUnique({ where: { id } });
 
     if (!invoice) {
-      return { success: false, error: 'Invoice not found' };
+      return { success: false, error: 'Factura no encontrada' };
     }
 
     if (invoice.status === 'SENT') {
@@ -268,7 +268,7 @@ export async function markInvoiceAsViewed(id: string): Promise<ActionResult> {
 
     return { success: true };
   } catch (error) {
-    return { success: false, error: 'Failed to update invoice' };
+    return { success: false, error: 'Error al actualizar la factura' };
   }
 }
 
@@ -284,11 +284,11 @@ export async function markAsPaid(
     });
 
     if (!invoice) {
-      return { success: false, error: 'Invoice not found' };
+      return { success: false, error: 'Factura no encontrada' };
     }
 
     if (invoice.status === 'PAID') {
-      return { success: false, error: 'Invoice is already paid' };
+      return { success: false, error: 'La factura ya esta pagada' };
     }
 
     await prisma.$transaction([
@@ -314,7 +314,7 @@ export async function markAsPaid(
     revalidatePath('/');
     return { success: true };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to mark as paid';
+    const message = error instanceof Error ? error.message : 'Error al marcar como pagada';
     return { success: false, error: message };
   }
 }

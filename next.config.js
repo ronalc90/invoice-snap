@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  output: process.env.STANDALONE === '1' ? 'standalone' : undefined,
   experimental: {
     serverComponentsExternalPackages: ['@react-pdf/renderer'],
     instrumentationHook: true,

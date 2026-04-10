@@ -59,10 +59,10 @@ describe('Invoice Schema Validation', () => {
       dueDate: '2024-02-15',
       taxRate: 10,
       currency: 'USD',
-      notes: 'Thank you for your business',
+      notes: 'Gracias por su negocio',
       items: [
         {
-          description: 'Web Development',
+          description: 'Desarrollo Web',
           quantity: 10,
           unitPrice: 100,
         },
