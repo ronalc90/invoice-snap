@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import type { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import bcrypt from 'bcryptjs';
 import { prisma } from './db';
 
 export const authConfig: NextAuthConfig = {
@@ -11,25 +12,22 @@ export const authConfig: NextAuthConfig = {
       name: 'credentials',
       credentials: {
         email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        if (!credentials?.email) return null;
+        if (!credentials?.email || !credentials?.password) return null;
 
         const email = credentials.email as string;
+        const password = credentials.password as string;
 
-        let user = await prisma.user.findUnique({
+        const user = await prisma.user.findUnique({
           where: { email },
         });
 
-        if (!user) {
-          // Auto-create user in dev mode
-          user = await prisma.user.create({
-            data: {
-              email,
-              name: email.split('@')[0],
-            },
-          });
-        }
+        if (!user || !user.password) return null;
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) return null;
 
         return {
           id: user.id,
