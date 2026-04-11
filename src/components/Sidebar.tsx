@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useSession, signOut } from 'next-auth/react';
 import { cn } from '@/lib/utils';
 
 const navigation = [
@@ -34,11 +35,25 @@ function ClientIcon({ className }: { className?: string }) {
   );
 }
 
+function LogoutIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+    </svg>
+  );
+}
+
 export function Sidebar() {
   const pathname = usePathname();
+  const { data: session } = useSession();
+
+  const userEmail = session?.user?.email || '';
+  const userName = session?.user?.name || '';
+  const userInitial = userName ? userName.charAt(0).toUpperCase() : userEmail ? userEmail.charAt(0).toUpperCase() : '?';
 
   return (
     <div className="flex h-full w-64 flex-col border-r bg-white">
+      {/* Logo */}
       <div className="flex h-16 items-center border-b px-6">
         <Link href="/" className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-600 text-white font-bold text-sm">
@@ -47,9 +62,11 @@ export function Sidebar() {
           <span className="text-xl font-bold text-gray-900">InvoiceSnap</span>
         </Link>
       </div>
+
+      {/* Navegacion */}
       <nav className="flex-1 space-y-1 px-3 py-4">
         {navigation.map((item) => {
-          const isActive = pathname === item.href || 
+          const isActive = pathname === item.href ||
             (item.href !== '/' && pathname.startsWith(item.href));
           return (
             <Link
@@ -68,8 +85,35 @@ export function Sidebar() {
           );
         })}
       </nav>
-      <div className="border-t p-4">
-        <p className="text-xs text-gray-500">InvoiceSnap v1.0</p>
+
+      {/* Seccion de usuario y cierre de sesion */}
+      <div className="border-t p-3 space-y-3">
+        {/* Info del usuario */}
+        {session?.user && (
+          <div className="flex items-center gap-3 rounded-lg bg-gray-50 px-3 py-2.5">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-100 text-primary-700 text-sm font-semibold">
+              {userInitial}
+            </div>
+            <div className="min-w-0 flex-1">
+              {userName && (
+                <p className="truncate text-sm font-medium text-gray-900">{userName}</p>
+              )}
+              <p className="truncate text-xs text-gray-500">{userEmail}</p>
+            </div>
+          </div>
+        )}
+
+        {/* Boton de cerrar sesion */}
+        <button
+          type="button"
+          onClick={() => signOut({ callbackUrl: '/login' })}
+          className="flex w-full items-center gap-3 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-sm font-semibold text-red-700 transition-all duration-200 hover:bg-red-100 hover:border-red-300 hover:shadow-sm"
+        >
+          <LogoutIcon className="h-5 w-5 text-red-500" />
+          Cerrar Sesion
+        </button>
+
+        <p className="text-center text-xs text-gray-400">InvoiceSnap v1.0</p>
       </div>
     </div>
   );
