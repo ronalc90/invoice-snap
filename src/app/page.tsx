@@ -28,6 +28,56 @@ export default async function DashboardPage() {
     );
   }
 
+  const isEmpty = stats.totalClients === 0 && recentInvoices.length === 0;
+
+  if (isEmpty) {
+    return (
+      <div className="space-y-8">
+        <div className="rounded-xl bg-gradient-to-r from-primary-600 via-primary-700 to-primary-800 p-8 text-white shadow-lg relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/4" />
+          <div className="absolute bottom-0 left-1/2 w-32 h-32 bg-white/5 rounded-full translate-y-1/2" />
+          <div className="relative z-10 text-center max-w-lg mx-auto">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20 text-2xl font-bold">
+              IS
+            </div>
+            <h2 className="text-2xl font-bold">Bienvenido a InvoiceSnap</h2>
+            <p className="mt-2 text-sm text-primary-100">
+              Comienza creando tu primer cliente para poder generar facturas profesionales en segundos.
+            </p>
+            <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                href="/clients/new"
+                className="rounded-lg bg-white px-6 py-2.5 text-sm font-semibold text-primary-700 shadow-md hover:bg-primary-50 transition-all duration-200 hover:-translate-y-0.5"
+              >
+                + Crear tu primer cliente
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-xl border bg-white p-8 shadow-sm text-center">
+          <div className="mx-auto max-w-md">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Como empezar</h3>
+            <ol className="text-left text-sm text-gray-600 space-y-3">
+              <li className="flex gap-3">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-100 text-primary-700 text-xs font-bold">1</span>
+                <span><strong>Agrega un cliente</strong> con sus datos de contacto</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-100 text-primary-700 text-xs font-bold">2</span>
+                <span><strong>Crea una factura</strong> con los items y montos</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-100 text-primary-700 text-xs font-bold">3</span>
+                <span><strong>Envia la factura</strong> por email y rastrea el estado</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
       {/* Banner de bienvenida */}

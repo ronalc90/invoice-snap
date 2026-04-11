@@ -15,7 +15,7 @@ export async function sendInvoiceEmail(params: SendInvoiceEmailParams): Promise<
   if (process.env.NODE_ENV === 'development' || !process.env.RESEND_API_KEY || process.env.RESEND_API_KEY === 're_mock_dev_key') {
     console.log('--- Mock Email Sent ---');
     console.log(`To: ${to}`);
-    console.log(`Subject: Invoice ${invoiceNumber} from InvoiceSnap`);
+    console.log(`Subject: Factura ${invoiceNumber} de InvoiceSnap`);
     console.log(`Client: ${clientName}`);
     console.log(`Total: ${currency} ${total}`);
     console.log(`Due: ${dueDate.toISOString()}`);
@@ -30,29 +30,35 @@ export async function sendInvoiceEmail(params: SendInvoiceEmailParams): Promise<
     const { Resend } = await import('resend');
     const resend = new Resend(process.env.RESEND_API_KEY);
 
-    const formattedTotal = new Intl.NumberFormat('en-US', {
+    const formattedTotal = new Intl.NumberFormat('es', {
       style: 'currency',
       currency,
     }).format(total);
 
+    const formattedDueDate = new Intl.DateTimeFormat('es', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }).format(dueDate);
+
     const { data, error } = await resend.emails.send({
       from: 'InvoiceSnap <invoices@invoicesnap.dev>',
       to: [to],
-      subject: `Invoice ${invoiceNumber} - ${formattedTotal}`,
+      subject: `Factura ${invoiceNumber} - ${formattedTotal}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #1e40af;">Invoice ${invoiceNumber}</h2>
-          <p>Hi ${clientName},</p>
-          <p>You have received a new invoice for <strong>${formattedTotal}</strong>.</p>
-          <p>Due date: <strong>${dueDate.toLocaleDateString()}</strong></p>
+          <h2 style="color: #1e40af;">Factura ${invoiceNumber}</h2>
+          <p>Hola ${clientName},</p>
+          <p>Has recibido una nueva factura por <strong>${formattedTotal}</strong>.</p>
+          <p>Fecha de vencimiento: <strong>${formattedDueDate}</strong></p>
           <div style="margin: 24px 0;">
             <a href="${viewUrl}"
                style="background-color: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">
-              View Invoice
+              Ver Factura
             </a>
           </div>
           <p style="color: #6b7280; font-size: 14px;">
-            This invoice was sent via InvoiceSnap.
+            Esta factura fue enviada a traves de InvoiceSnap.
           </p>
         </div>
       `,
