@@ -1,7 +1,7 @@
 # ─────────────────────────────────────────────────────────
 # Stage 1: Dependencias
 # ─────────────────────────────────────────────────────────
-FROM node:18-alpine AS deps
+FROM node:22-alpine AS deps
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
@@ -9,7 +9,7 @@ RUN npm ci
 # ─────────────────────────────────────────────────────────
 # Stage 2: Build
 # ─────────────────────────────────────────────────────────
-FROM node:18-alpine AS build
+FROM node:22-alpine AS build
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -20,7 +20,7 @@ RUN npm run build
 # ─────────────────────────────────────────────────────────
 # Stage 3: Runner (produccion)
 # ─────────────────────────────────────────────────────────
-FROM node:18-alpine
+FROM node:22-alpine
 WORKDIR /app
 
 RUN addgroup -S app && adduser -S app -G app
