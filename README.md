@@ -95,7 +95,7 @@ Los **Server Actions** manejan toda la logica autenticada (crear, editar, elimin
 
 ### Prerrequisitos
 
-- Node.js 18+
+- Node.js 22+
 - npm o yarn
 
 ### Pasos

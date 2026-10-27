@@ -147,12 +147,16 @@ volumes:
 ### Dockerfile
 
 ```dockerfile
-FROM node:18-alpine AS base
+FROM node:22-alpine AS base
+# Prisma necesita OpenSSL para detectar la libssl de Alpine
+RUN apk add --no-cache openssl
 
 # Instalar dependencias
 FROM base AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
+# El postinstall (prisma generate) necesita el schema
+COPY prisma ./prisma
 RUN npm ci
 
 # Build
@@ -161,6 +165,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npx prisma generate
+ENV STANDALONE=1
 RUN npm run build
 
 # Produccion
