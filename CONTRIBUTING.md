@@ -4,7 +4,7 @@ Gracias por tu interes en contribuir a InvoiceSnap. Esta guia explica como parti
 
 ## Requisitos Previos
 
-- Node.js 18+
+- Node.js 22+
 - npm
 - Git
 

@@ -4,7 +4,7 @@
 
 ### Prerrequisitos
 
-- Node.js 18 o superior
+- Node.js 22 o superior
 - npm
 
 ### Pasos
